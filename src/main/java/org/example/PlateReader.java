@@ -21,6 +21,7 @@ public class PlateReader {
 
     /**
      * Creates a new Reader for the given license plate image.
+     * 
      * @param licensePlate An image of a license plate in grayscale.
      */
     public PlateReader(Mat licensePlate) {
@@ -70,7 +71,7 @@ public class PlateReader {
 
     private static boolean isPlateCharacter(Rect r) {
         double aspectRatio = (double) r.width / r.height;
-        return 0.45 < aspectRatio && aspectRatio < 0.7 && r.height > 60;
+        return 0.45 < aspectRatio && aspectRatio < 1.5 && r.height > 50;
     }
 
     private String findBestMatch(Mat roi) {
