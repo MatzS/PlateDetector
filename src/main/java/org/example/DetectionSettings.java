@@ -19,7 +19,8 @@ public class DetectionSettings {
 
     //FIlter
 
-    public static int FILTER_MIN_SIZE = 100;
+    public static int FILTER_MIN_SIZE = 2000;
+    public static int FILTER_MAX_SIZE = 15000;
 
 
     // Hierarchy
@@ -28,7 +29,7 @@ public class DetectionSettings {
     public static int HY_NUM_CHILD_LOW_LOW = 4;
     public static int HY_NUM_CHILD_LOW_HIGH = 8;
 
-    public static int HY_NUM_CHILD_HIGH = 30;
+    public static int HY_NUM_CHILD_HIGH = 10;
 
     public static int HY_NUM_CHILD_HIGH_LOW = 9;
     public static int HY_NUM_CHILD_HIGH_HIGH = 20;

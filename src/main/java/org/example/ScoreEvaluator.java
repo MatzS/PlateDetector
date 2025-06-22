@@ -35,7 +35,7 @@ public class ScoreEvaluator {
             totalScore += ce.hierarchyScore.childCountScore * WEIGHT_CHILD_COUNT;
             totalScore += ce.hierarchyScore.childSizeScore * WEIGHT_CHILD_SIZE;
 
-            ce.totalScore = ce.histogramScore.hScore * ce.histogramScore.sScore * ce.histogramScore.vScore
+            ce.totalScore = (ce.histogramScore.sum * 0.7)
                             * ce.hierarchyScore.childSizeScore * ce.hierarchyScore.childCountScore
                             * ce.shapeScore.extentScore * ce.shapeScore.aspectRatioScore;
         }

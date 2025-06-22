@@ -19,8 +19,4 @@ public class ContourFinder {
         Imgproc.findContours(ppResult.edges.clone(), contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
         return new ContoursResult(ppResult,contours, hierarchy);
     }
-
-    public int getSubContourCount(ContourElement ce) {
-        return 0;
-    }
 }

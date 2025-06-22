@@ -1,7 +1,6 @@
 package org.example;
 
 import org.example.dataObjects.PreprocessingResult;
-import org.example.dataObjects.PreprocessingSetting;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;

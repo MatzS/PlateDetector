@@ -38,7 +38,3 @@ build/
 ### Mac OS ###
 .DS_Store
 
-### Bilder ###
-Bilder/*.jpg
-Bilder/Konturen
-Bilder/Testerg

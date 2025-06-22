@@ -24,7 +24,7 @@ public class HierarchyScorer {
                 childIdx = (int) hierarchy.get(0, childIdx)[0];
             }
 
-            double score = 0.0;
+            double score = 0.1;
             if(i > 160) {
                 System.out.println("!");
             }
@@ -35,7 +35,7 @@ public class HierarchyScorer {
             } else if (childCount >= 2 && childCount < 4) {
                 score = DetectionSettings.HY_CHILD_COUNT_SCORE * 0.3;
             } else {
-                score = DetectionSettings.HY_CHILD_COUNT_SCORE * 0.0;
+                score = DetectionSettings.HY_CHILD_COUNT_SCORE * 0.1;
             }
 
             result.contours.get(i).hierarchyScore.setChildCountScore(score);
@@ -76,9 +76,7 @@ public class HierarchyScorer {
                 score += 0.1;
             }
 
-            score *= DetectionSettings.HY_CHILD_SIZE_FAKTOR;
-
-            result.contours.get(i).hierarchyScore.setChildSizeScore(Math.min(score, 1.0));
+            result.contours.get(i).hierarchyScore.setChildSizeScore(Math.max(score, 0.1));
         }
 
         return result;
@@ -88,6 +86,6 @@ public class HierarchyScorer {
     public ContoursResult computeHierarchyScores(ContoursResult result) {
         ContoursResult afterCount = this.computeChildCountScore(result);
         ContoursResult afterSize = this.computeSimilarSizeChildrenScore(afterCount);
-        return afterSize;
+        return afterCount;
     }
 }

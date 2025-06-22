@@ -20,6 +20,12 @@ public class ContoursResult {
         this.hierarchy = hierarchy;
     }
 
+    public ContoursResult(PreprocessingResult ppResult, Mat hierarchy, List<ContourElement> contours) {
+        this.ppResult = ppResult;
+        this.contours = contours;
+        this.hierarchy = hierarchy;
+    }
+
     public ContourElement getBestContour() {
         return contours.stream().max(java.util.Comparator.comparingDouble(c -> c.totalScore)).orElse(null);
     }

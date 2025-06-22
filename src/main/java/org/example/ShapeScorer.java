@@ -66,6 +66,7 @@ public class ShapeScorer {
     }
 
     public ContoursResult computeShapeScores(ContoursResult result) {
+        int index = 0;
         for (ContourElement ce : result.contours) {
             RotatedRect rect = getRotatedRect(ce.contour);
             double aspectRatio = computeAspectRatio(rect);
@@ -78,6 +79,7 @@ public class ShapeScorer {
             ce.shapeScore.setAspectRatioScore(aspectRatioScore);
             ce.shapeScore.setExtentScore(extentScore);
             ce.shapeScore.setSizeScore(sizeScore);
+            index++;
         }
         return result;
     }
