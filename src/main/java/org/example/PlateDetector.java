@@ -7,6 +7,7 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.utils.Converters;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class PlateDetector {
@@ -73,41 +74,69 @@ public class PlateDetector {
     }
 
     private Mat getResultImageMat(MatOfPoint contour) {
-        // 1. Konvertiere Kontur zu MatOfPoint2f (für minAreaRect)
+        // 1. Konvertiere Kontur zu MatOfPoint2f
         MatOfPoint2f contour2f = new MatOfPoint2f(contour.toArray());
 
-        // 2. Ermittle das RotatedRect (kleinste umschließende Rotationsbox)
+        // 2. Ermittle das RotatedRect
         RotatedRect rect = Imgproc.minAreaRect(contour2f);
 
-        // 3. Hole die Ecken des RotatedRect
+        // 3. Extrahiere Punkte (4 Ecken)
         Point[] rectPoints = new Point[4];
         rect.points(rectPoints);
 
-        // 4. Bestimme die Breite und Höhe des Rechtecks
-        int width = (int) rect.size.width;
-        int height = (int) rect.size.height;
+        // 4. Sortiere Punkte: top-left, top-right, bottom-right, bottom-left
+        Point[] ordered = orderPoints(rectPoints);
 
-        // Korrigiere Breite/Höhe falls nötig (z. B. bei Rotation)
-        if (width <= 0 || height <= 0) return null;
+        // 5. Berechne Breite und Höhe basierend auf den tatsächlichen Distanzen
+        double widthA = distance(ordered[2], ordered[3]); // bottom
+        double widthB = distance(ordered[1], ordered[0]); // top
+        double maxWidth = Math.max(widthA, widthB);
 
-        // 5. Definiere Zielpunkte für die "entrotierte" Ansicht (z. B. oben-links, oben-rechts, ...)
+        double heightA = distance(ordered[0], ordered[3]); // left
+        double heightB = distance(ordered[1], ordered[2]); // right
+        double maxHeight = Math.max(heightA, heightB);
+
+        // Zielpunkte in exakt derselben Reihenfolge
         Point[] dstPoints = new Point[] {
-                new Point(0, height - 1),
-                new Point(0, 0),
-                new Point(width - 1, 0),
-                new Point(width - 1, height - 1)
+                new Point(0, 0),                       // top-left
+                new Point(maxWidth - 1, 0),            // top-right
+                new Point(maxWidth - 1, maxHeight - 1),// bottom-right
+                new Point(0, maxHeight - 1)            // bottom-left
         };
 
         // 6. Perspektivtransformation berechnen
-        Mat srcMat = Converters.vector_Point2f_to_Mat(Arrays.asList(rectPoints));
+        Mat srcMat = Converters.vector_Point2f_to_Mat(Arrays.asList(ordered));
         Mat dstMat = Converters.vector_Point2f_to_Mat(Arrays.asList(dstPoints));
         Mat transform = Imgproc.getPerspectiveTransform(srcMat, dstMat);
 
-        // 7. Originalbild ausschneiden
+        // 7. Bild extrahieren
         Mat warped = new Mat();
-        Imgproc.warpPerspective(src, warped, transform, new Size(width, height));
+        Imgproc.warpPerspective(src, warped, transform, new Size(maxWidth, maxHeight));
+
+        // 8. Optional: Normalisieren auf feste Ausgabegröße (z. B. 640x100)
         Mat resized = new Mat();
-        Imgproc.resize(warped, resized, new Size(640,100));
+        Imgproc.resize(warped, resized, new Size(640, 100));
+
         return resized;
+    }
+
+    private Point[] orderPoints(Point[] pts) {
+        // Summe (x + y): top-left ist kleinste, bottom-right ist größte
+        // Differenz (y - x): top-right ist kleinste, bottom-left ist größte
+        Point[] ordered = new Point[4];
+
+        Arrays.sort(pts, Comparator.comparingDouble(p -> p.x + p.y));
+        ordered[0] = pts[0]; // top-left
+        ordered[2] = pts[3]; // bottom-right
+
+        Arrays.sort(pts, Comparator.comparingDouble(p -> p.y - p.x));
+        ordered[1] = pts[0]; // top-right
+        ordered[3] = pts[3]; // bottom-left
+
+        return ordered;
+    }
+
+    private double distance(Point p1, Point p2) {
+        return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
     }
 }
