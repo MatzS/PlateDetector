@@ -1,6 +1,5 @@
 package org.example;
 
-import org.example.dataObjects.ContourElement;
 import org.example.dataObjects.HSVHistogram;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -16,6 +15,7 @@ public class HistogramUtils {
 
     /**
      * Erstellt aus einer Kontur ein HSVHistogramm
+     * 
      * @param contour Kontur
      * @return ein HSVHistogramm
      */
@@ -33,23 +33,26 @@ public class HistogramUtils {
         Imgproc.drawContours(mask, Collections.singletonList(shifted), -1, new Scalar(255), -1);
 
         Mat histH = new Mat();
-        Imgproc.calcHist(Collections.singletonList(hsv), new MatOfInt(0), mask, histH, new MatOfInt(180), new MatOfFloat(0f, 180f));
+        Imgproc.calcHist(Collections.singletonList(hsv), new MatOfInt(0), mask, histH, new MatOfInt(180),
+                new MatOfFloat(0f, 180f));
         Core.normalize(histH, histH);
 
         Mat histS = new Mat();
-        Imgproc.calcHist(Collections.singletonList(hsv), new MatOfInt(1), mask, histS, new MatOfInt(256), new MatOfFloat(0f, 256f));
+        Imgproc.calcHist(Collections.singletonList(hsv), new MatOfInt(1), mask, histS, new MatOfInt(256),
+                new MatOfFloat(0f, 256f));
         Core.normalize(histS, histS);
 
         Mat histV = new Mat();
-        Imgproc.calcHist(Collections.singletonList(hsv), new MatOfInt(2), mask, histV, new MatOfInt(256), new MatOfFloat(0f, 256f));
+        Imgproc.calcHist(Collections.singletonList(hsv), new MatOfInt(2), mask, histV, new MatOfInt(256),
+                new MatOfFloat(0f, 256f));
         Core.normalize(histV, histV);
 
         return new HSVHistogram(histH, histS, histV);
     }
 
-
     /**
      * Erstellt aus den Bildern im folderpath ein Referenz-Histogramm.
+     * 
      * @param folderpath Pfad zum Kennzeichen-Ordner
      * @return Referenz-HSVHistogramm
      */
@@ -74,15 +77,18 @@ public class HistogramUtils {
                 Imgproc.cvtColor(img, hsv, Imgproc.COLOR_BGR2HSV);
 
                 Mat histH = new Mat();
-                Imgproc.calcHist(Collections.singletonList(hsv), new MatOfInt(0), new Mat(), histH, new MatOfInt(180), new MatOfFloat(0f, 180f));
+                Imgproc.calcHist(Collections.singletonList(hsv), new MatOfInt(0), new Mat(), histH, new MatOfInt(180),
+                        new MatOfFloat(0f, 180f));
                 Core.normalize(histH, histH);
 
                 Mat histS = new Mat();
-                Imgproc.calcHist(Collections.singletonList(hsv), new MatOfInt(1), new Mat(), histS, new MatOfInt(256), new MatOfFloat(0f, 256f));
+                Imgproc.calcHist(Collections.singletonList(hsv), new MatOfInt(1), new Mat(), histS, new MatOfInt(256),
+                        new MatOfFloat(0f, 256f));
                 Core.normalize(histS, histS);
 
                 Mat histV = new Mat();
-                Imgproc.calcHist(Collections.singletonList(hsv), new MatOfInt(2), new Mat(), histV, new MatOfInt(256), new MatOfFloat(0f, 256f));
+                Imgproc.calcHist(Collections.singletonList(hsv), new MatOfInt(2), new Mat(), histV, new MatOfInt(256),
+                        new MatOfFloat(0f, 256f));
                 Core.normalize(histV, histV);
 
                 Core.add(avgHistH, histH, avgHistH);

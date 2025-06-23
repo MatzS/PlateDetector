@@ -1,6 +1,5 @@
 package org.example;
 
-import org.example.dataObjects.ContourElement;
 import org.example.dataObjects.ContoursResult;
 import org.example.dataObjects.PreprocessingResult;
 import org.opencv.core.*;
