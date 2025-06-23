@@ -12,7 +12,17 @@ import org.opencv.imgproc.Imgproc;
 import java.io.File;
 import java.util.List;
 
+/**
+ * Methoden für die Visualisierung/Speicherung
+ * von Elementen/MAtrizen.
+ */
 public class Visualizer {
+
+    /**
+     * Speichert die Bounding-Box der Kontur im File.
+     * @param bestContour Kontur
+     * @param filename Filename/Pfad.
+     */
     public static void drawContour(ContourElement bestContour, String filename) {
         Rect rect = Imgproc.boundingRect(bestContour.contour);
         Mat src = PlateDetector.src.clone();
@@ -25,6 +35,11 @@ public class Visualizer {
         }
     }
 
+    /**
+     * Speichert eine Liste von Konturen im angegebenen Pfad.
+     * @param contours Konturen
+     * @param folderPath Pfad
+     */
     public static void drawNContours(List<ContourElement> contours, String folderPath) {
         for (int i = 0; i < contours.size(); i++) {
             ContourElement cont = contours.get(i);
@@ -32,10 +47,19 @@ public class Visualizer {
         }
     }
 
+    /**
+     * Speichert/Zeichnet Matrix ins angegebene File.
+     * @param mat Matrix
+     * @param filename File/Pfad
+     */
     public static void drawMat(Mat mat, String filename) {
         Imgcodecs.imwrite(filename, mat);
     }
 
+    /**
+     * Zeichnet alle Konturen in den Bilder/Konturen-Ordner
+     * @param result Alle Konturen
+     */
     public static void drawAllContours(ContoursResult result) {
         deleteOldContours();
         for (int i = 0; i < result.contours.size(); i++) {
@@ -44,6 +68,9 @@ public class Visualizer {
         }
     }
 
+    /**
+     * Löscht alle alten Konturen im Bilder/Konturen-Ordner
+     */
     private static void deleteOldContours() {
         File dir = new File("Bilder/Konturen");
         if (dir.exists()) {

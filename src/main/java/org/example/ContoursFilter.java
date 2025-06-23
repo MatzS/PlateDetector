@@ -9,7 +9,19 @@ import org.opencv.imgproc.Imgproc;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Filtert Konturen
+ */
 public class ContoursFilter {
+
+    /**
+     * Filtert die Konturen anhand der Konturfläche.
+     * @param input Alle Konturen.
+     * @param minArea minimale Konturfläche.
+     * @param maxArea maximale Konturfläche.
+     * @return alle Konturen dessen Konturfläche in den Grenzen liegt.
+     */
     public ContoursResult filterContoursByArea(ContoursResult input, double minArea, double maxArea) {
         List<ContourElement> originalElements = input.contours;
         Mat originalHierarchy = input.hierarchy;

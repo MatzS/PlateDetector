@@ -1,5 +1,9 @@
 package org.example.dataObjects;
 
+/**
+ * Enthält die Scores die durch die Untersuchung der
+ * Kontur-Formen (Shape) berechnet wurden.
+ */
 public class ShapeScore {
     public double aspectRatioScore = 0;
     public double extentScore = 0;

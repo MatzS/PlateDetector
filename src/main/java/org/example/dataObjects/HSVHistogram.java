@@ -2,14 +2,16 @@ package org.example.dataObjects;
 
 import org.opencv.core.Mat;
 
-// Repräsentiert zwei Histogramme im HSV-Farbraum
-// Einmal fpr den H- und den S-Wert
-public class HSHistogram {
+/**
+ * Bündelt die Histogramm-Daten für alle drei Kanäle
+ * eines Bildes im HSV-Farbmodell
+ */
+public class HSVHistogram {
     public Mat histH;
     public Mat histS;
     public Mat histV;
 
-    public HSHistogram(Mat histH, Mat histS, Mat histV) {
+    public HSVHistogram(Mat histH, Mat histS, Mat histV) {
         this.histH = histH;
         this.histS = histS;
         this.histV = histV;
