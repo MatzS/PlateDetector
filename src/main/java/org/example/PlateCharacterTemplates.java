@@ -13,9 +13,9 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 /**
- * Provides image templates for license plate characters.
+ * Stellt Bilder Templates für die Zeichen auf Autokennzeichen zur Verfügung.
  * <p>
- * The templates are generated from a predefined alphabet image.
+ * Die Templates werden aus einem vordefinierten Alphabet-Bild generiert.
  * </p>
  */
 public class PlateCharacterTemplates {
@@ -23,9 +23,9 @@ public class PlateCharacterTemplates {
     public Map<String, Mat> templates;
 
     /**
-     * Creates new character templates by reading a fixed alphabet image.
+     * Erstellt neue Templates für Zeichen, indem ein festes Alphabet-Bild ausgelesen wird.
      * <p>
-     * Templates are saved to a map with their corresponding characters as keys.
+     * Templates werden in einer Map gespeichert mit den entsprechenden Zeichen als Keys.
      * </p>
      */
     public PlateCharacterTemplates() {

@@ -13,16 +13,16 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 /**
- * Reads the Characters from a license plate.
+ * Liest die Zeichen von einem Autokennzeichen.
  */
 public class PlateReader {
     private PlateCharacterTemplates pct;
     private Mat licensePlate;
 
     /**
-     * Creates a new Reader for the given license plate image.
+     * Erstellt einen neuen Reader für das angegebene Autokennzeichen.
      * 
-     * @param licensePlate An image of a license plate in grayscale.
+     * @param licensePlate Ein Bild von einem Kennzeichen als Graustufenbild.
      */
     public PlateReader(Mat licensePlate) {
         pct = new PlateCharacterTemplates();
@@ -30,9 +30,9 @@ public class PlateReader {
     }
 
     /**
-     * Reads the license plate and returns the text.
+     * Liest das Autokennzeichen und gibt den Text zurück.
      * 
-     * @return A String representing the license plate.
+     * @return Ein String, der das Kennzeichen repräsentiert.
      */
     public String readPlateText() {
         Imgproc.threshold(licensePlate, licensePlate, 127, 255, Imgproc.THRESH_BINARY_INV);
