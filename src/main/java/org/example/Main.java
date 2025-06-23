@@ -12,7 +12,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws Exception {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        testSingleImage(Imgcodecs.imread("Bilder/Cars/car13.jpg"));
+        testSingleImage(Imgcodecs.imread("Bilder/Cars/car05.jpg"));
         // testPlateReader(Imgcodecs.imread("Bilder/Kennzeichen/kennzeichen_3.jpg",
         // Imgcodecs.IMREAD_GRAYSCALE));
     }

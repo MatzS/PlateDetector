@@ -1,5 +1,9 @@
 package org.example.dataObjects;
 
+/**
+ * Enthält die Scores die durch die Vergleiche der
+ * Histogramme (HSV) entstanden sind.
+ */
 public class HistogramScore {
     public double hScore = 0;
     public double sScore = 0;

@@ -7,14 +7,26 @@ import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.RotatedRect;
 import org.opencv.imgproc.Imgproc;
 
-
+/**
+ * Für die BErechnung der Shape-Scores
+ */
 public class ShapeScorer {
 
+    /**
+     * Gibt das minAreaRect der Kontur zurück.
+     * @param contour Kontur
+     * @return minAreaRect
+     */
     private RotatedRect getRotatedRect(MatOfPoint contour) {
         MatOfPoint2f contour2f = new MatOfPoint2f(contour.toArray());
         return Imgproc.minAreaRect(contour2f);
     }
 
+    /**
+     * Berechnet das Seitenverhältnis
+     * @param rect minAreaRect
+     * @return Seitenverhältnis
+     */
     private double computeAspectRatio(RotatedRect rect) {
         double width = rect.size.width;
         double height = rect.size.height;
@@ -22,6 +34,15 @@ public class ShapeScorer {
         return width > height ? width / height : height / width;
     }
 
+    /**
+     * Berechnet den "Extent" der Kontur. Dazu nehmen wir das RotatedRect, was
+     * mit Imgproc.minAreaRect(contour2f) erstellt wurde und vergleichen dann die
+     * Flächen der beiden Elemente. Weil ein Kennzeichen rechteckig ist, sollten die
+     * Flächen sehr ähnlich sein.
+     * @param contour Kontur
+     * @param rect minAreaRect der Kontur
+     * @return Verhältnis aus Kontur- / Rect-Fläche.
+     */
     private double computeExtent(MatOfPoint contour, RotatedRect rect) {
         double contourArea = Imgproc.contourArea(contour);
         double rectArea = rect.size.width * rect.size.height;
@@ -29,12 +50,22 @@ public class ShapeScorer {
         return contourArea / rectArea;
     }
 
+    /**
+     * Bewertet das Seitenverhältnis
+     * @param aspectRatio Seitenverhältnis
+     * @return Sitenverhältnis-Score
+     */
     private double scoreAspectRatio(double aspectRatio) {
         if (aspectRatio >= DetectionSettings.SH_ASPECT_LOWER && aspectRatio <= DetectionSettings.SH_ASPECT_HIGHER) return DetectionSettings.SH_ASPECT_FACTOR;
         if (aspectRatio >= 2.8 && aspectRatio < 5.5) return DetectionSettings.SH_ASPECT_FACTOR * 0.5;
         return 0;
     }
 
+    /**
+     * Bewertet den Extent
+     * @param extent Extent-Wert
+     * @return Extent-Score
+     */
     private double scoreExtent(double extent) {
         double target = DetectionSettings.SH_EXTENT;
         double factor = DetectionSettings.SH_EXTENT_FACTOR;
@@ -50,23 +81,32 @@ public class ShapeScorer {
         return Math.max(0, score);
     }
 
+    /**
+     * Berechnet und bewertet die Größe der Kontur
+     * @param ce Kontur
+     * @return Shape-Score der Kontur
+     */
     private double scoreSize(ContourElement ce) {
         MatOfPoint2f contour2f = new MatOfPoint2f(ce.contour.toArray());
         RotatedRect rotatedRect = Imgproc.minAreaRect(contour2f);
         double area = rotatedRect.size.height * rotatedRect.size.width;
-        if(area > 2000) {
+        if(area > DetectionSettings.SH_SIZE_HIGHEST) {
             return 1.0;
-        } else if(area > 1000) {
+        } else if(area > DetectionSettings.SH_SIZE_MIDDLE) {
             return 0.7;
-        } else if(area > 800) {
+        } else if(area > DetectionSettings.SH_SIZE_LOWEST) {
             return 0.5;
         } else {
             return 0;
         }
     }
 
+    /**
+     * Berechnet für jede Kontur den Shape-Score
+     * @param result Alle Konturen
+     * @return Alle Konturen mit gesetztem Shape-Score.
+     */
     public ContoursResult computeShapeScores(ContoursResult result) {
-        int index = 0;
         for (ContourElement ce : result.contours) {
             RotatedRect rect = getRotatedRect(ce.contour);
             double aspectRatio = computeAspectRatio(rect);
@@ -79,7 +119,6 @@ public class ShapeScorer {
             ce.shapeScore.setAspectRatioScore(aspectRatioScore);
             ce.shapeScore.setExtentScore(extentScore);
             ce.shapeScore.setSizeScore(sizeScore);
-            index++;
         }
         return result;
     }

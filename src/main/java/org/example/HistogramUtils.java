@@ -1,7 +1,7 @@
 package org.example;
 
 import org.example.dataObjects.ContourElement;
-import org.example.dataObjects.HSHistogram;
+import org.example.dataObjects.HSVHistogram;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -9,11 +9,17 @@ import org.opencv.imgproc.Imgproc;
 import java.io.File;
 import java.util.Collections;
 
+/**
+ * Hilfsfunktionen für die Arbeit mit den Histogrammen
+ */
 public class HistogramUtils {
 
-    // Erstellt aus einer gefunden Contour drei Histogramme im HSV-Farbraum
-    // Ein Histogramm für jeden Kanal
-    public static HSHistogram calcHSHistogramFromMatOfPoint(MatOfPoint contour) {
+    /**
+     * Erstellt aus einer Kontur ein HSVHistogramm
+     * @param contour Kontur
+     * @return ein HSVHistogramm
+     */
+    public static HSVHistogram calcHSVHistogramFromMatOfPoint(MatOfPoint contour) {
         Rect rect = Imgproc.boundingRect(contour);
         Mat hsv = new Mat(PlateDetector.hsv, rect);
 
@@ -38,13 +44,16 @@ public class HistogramUtils {
         Imgproc.calcHist(Collections.singletonList(hsv), new MatOfInt(2), mask, histV, new MatOfInt(256), new MatOfFloat(0f, 256f));
         Core.normalize(histV, histV);
 
-        return new HSHistogram(histH, histS, histV);
+        return new HSVHistogram(histH, histS, histV);
     }
 
 
-    // Erstellt aus den Kennzeichenbildern im Kennzeichen-Ordner ein
-    // Durchschnittshistogramm im HSV-Farbraum.
-    public static HSHistogram calcAverageHSHistogram(String folderpath) {
+    /**
+     * Erstellt aus den Bildern im folderpath ein Referenz-Histogramm.
+     * @param folderpath Pfad zum Kennzeichen-Ordner
+     * @return Referenz-HSVHistogramm
+     */
+    public static HSVHistogram calcAverageHSVHistogram(String folderpath) {
         File folder = new File(folderpath);
         File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".jpg"));
 
@@ -91,6 +100,6 @@ public class HistogramUtils {
             Core.divide(avgHistV, new Scalar(count), avgHistV);
         }
 
-        return new HSHistogram(avgHistH, avgHistS, avgHistV);
+        return new HSVHistogram(avgHistH, avgHistS, avgHistV);
     }
 }

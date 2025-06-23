@@ -9,10 +9,16 @@ import org.opencv.imgproc.Imgproc;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Extrahiert Konturen
+ */
 public class ContourFinder {
 
-    // Verarbeitet das Preprocessing-Result und findet die Contours
-    // und die hierarchy. Returned dann alle Daten in einem Contours-Result
+    /**
+     * Extrahiert alle Konturen aus den Kanten (edges) der Vorverabeitung
+     * @param ppResult Daten der Vorverarbeitung
+     * @return Alle Konturen des Bildes mit Hierarchie
+     */
     public ContoursResult getContours(PreprocessingResult ppResult) {
         List<MatOfPoint> contours = new ArrayList<>();
         Mat hierarchy = new Mat();

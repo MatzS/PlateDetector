@@ -3,37 +3,18 @@ package org.example;
 import org.example.dataObjects.ContourElement;
 import org.example.dataObjects.ContoursResult;
 
+/**
+ * Für die Berechnung der finalen Scores
+ */
 public class ScoreEvaluator {
 
-    // Histogram weights
-    private static final double WEIGHT_H = 0.15;
-    private static final double WEIGHT_S = 0.15;
-    private static final double WEIGHT_V = 0.15;
-
-    // Shape weights
-    private static final double WEIGHT_ASPECT = 0.25;
-    private static final double WEIGHT_EXTENT = 0.20;
-
-    // Hierarchy weights
-    private static final double WEIGHT_CHILD_COUNT = 0.25;
-    private static final double WEIGHT_CHILD_SIZE = 0.15;
-
+    /**
+     * Berechnet für jede Kontur den finalen Score
+     * @param result Alle Konturen
+     * @return Alle Konturen mit gesetztem totalScore
+     */
     public ContoursResult computeTotalScores(ContoursResult result) {
         for (ContourElement ce : result.contours) {
-            double totalScore = 0;
-
-            // Histogram
-            totalScore += ce.histogramScore.hScore * WEIGHT_H;
-            totalScore += ce.histogramScore.sScore * WEIGHT_S;
-            totalScore += ce.histogramScore.vScore * WEIGHT_V;
-
-            // Shape
-            totalScore += ce.shapeScore.aspectRatioScore * WEIGHT_ASPECT;
-            totalScore += ce.shapeScore.extentScore * WEIGHT_EXTENT;
-
-            // Hierarchy
-            totalScore += ce.hierarchyScore.childCountScore * WEIGHT_CHILD_COUNT;
-            totalScore += ce.hierarchyScore.childSizeScore * WEIGHT_CHILD_SIZE;
 
             ce.totalScore = (ce.histogramScore.sum * 0.7)
                             * ce.hierarchyScore.childSizeScore * ce.hierarchyScore.childCountScore
@@ -42,6 +23,11 @@ public class ScoreEvaluator {
         return result;
     }
 
+    /**
+     * Zum Debuggen. Prüft ob ein Wert ggf. für alle
+     * Konturen 0 ist. Um Fehler zu finden.
+     * @param result Alle Konturen
+     */
     public static void checkAllZeroScores(ContoursResult result) {
         boolean allH = result.contours.stream().allMatch(c -> c.histogramScore.hScore == 0.0);
         boolean allS = result.contours.stream().allMatch(c -> c.histogramScore.sScore == 0.0);

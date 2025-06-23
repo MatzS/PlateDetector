@@ -10,6 +10,11 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+
+/**
+ * Wertet die Konturen in einem Bild aus
+ * um das Kennzeichen zu finden.
+ */
 public class PlateDetector {
 
     private Preprocesser pp;
@@ -46,6 +51,10 @@ public class PlateDetector {
         this.filter = new ContoursFilter();
     }
 
+    /**
+     * Sucht das Kennzeichen im Bild
+     * @return Mat-Element des Kennzeichens
+     */
     public Mat detectPlate() {
         PreprocessingResult ppResult = pp.preprocessingImage();
         ContoursResult contResult = cf.getContours(ppResult);
@@ -60,7 +69,7 @@ public class PlateDetector {
         ContourElement best = result.getBestContour();
 
 
-        //Output
+        //Output zum Debuggen
         List<ContourElement> top10 = result.getNBestContours(10);
         Visualizer.drawNContours(top10, "Bilder");
         Visualizer.drawMat(ppResult.edges, "Bilder/Kanten.jpg");
@@ -73,6 +82,12 @@ public class PlateDetector {
         return resultMat;
     }
 
+    /**
+     * Transformiert die gefundene Kontur in eine rechteckige Matrix
+     * der Größe 640x100
+     * @param contour Die Kontur
+     * @return 640x100 Mat
+     */
     private Mat getResultImageMat(MatOfPoint contour) {
         // 1. Konvertiere Kontur zu MatOfPoint2f
         MatOfPoint2f contour2f = new MatOfPoint2f(contour.toArray());
@@ -120,6 +135,11 @@ public class PlateDetector {
         return resized;
     }
 
+    /**
+     * Sortiert ein Array von Punkten
+     * @param pts Eckpunkte des Rect-Elements
+     * @return sortiertes Punkte Array
+     */
     private Point[] orderPoints(Point[] pts) {
         // Summe (x + y): top-left ist kleinste, bottom-right ist größte
         // Differenz (y - x): top-right ist kleinste, bottom-left ist größte
@@ -136,6 +156,12 @@ public class PlateDetector {
         return ordered;
     }
 
+    /**
+     * Berechnet die Distanz zwischen zwei Punkten
+     * @param p1 Punkt1
+     * @param p2 Punkt2
+     * @return Distanz zwischen den Punkten
+     */
     private double distance(Point p1, Point p2) {
         return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
     }

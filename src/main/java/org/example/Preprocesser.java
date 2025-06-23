@@ -6,14 +6,15 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Kümmert sich um die Vorverarbeitung des Bildes.
+ */
 public class Preprocesser {
 
-    // Wandelt das Bild in ein Graustufen-Bild um
-    // Glättet dann das Bild mit einem Gaus-Filter
-    // Und extrahiert die Kanten mit einem Canny-Filter
+    /**
+     * Vorverarbeitung des Bildes
+     * @return Ergebniss nach der Vorverabeitung
+     */
     public PreprocessingResult preprocessingImage() {
         Mat gray = new Mat();
         Imgproc.cvtColor(PlateDetector.src, gray, Imgproc.COLOR_BGR2GRAY);
@@ -29,6 +30,7 @@ public class Preprocesser {
         Mat edges = new Mat();
         Imgproc.Canny(mask, edges, DetectionSettings.PRE_CANNY1, DetectionSettings.PRE_CANNY2);
 
+        // Kanten verstärken
         Imgproc.dilate(edges, edges, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(3, 3)));
         return new PreprocessingResult(mask, edges, blurred);
     }

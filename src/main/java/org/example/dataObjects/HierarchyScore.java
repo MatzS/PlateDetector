@@ -1,5 +1,9 @@
 package org.example.dataObjects;
 
+/**
+ * Enthält die Scores die durch die Untersuchung der
+ * Hierarchie der Konturen berechnet wurden.
+ */
 public class HierarchyScore {
     public double childCountScore = 0;
     public double childSizeScore = 0;
