@@ -2,7 +2,6 @@ package org.example;
 
 import org.example.dataObjects.*;
 import org.opencv.core.*;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.utils.Converters;
 

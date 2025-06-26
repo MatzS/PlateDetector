@@ -1,13 +1,11 @@
 package org.example.dataObjects;
 
 import org.example.HistogramUtils;
-import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 
 /**
- * Repräsentiert eine im Bild gefundene Kontur.
- * Bündelt alle notwendigen Scores um zu entscheiden,
- * ob es sich bei der Kontur um ein Kennzeichen handelt.
+ * Repräsentiert eine im Bild gefundene Kontur. Bündelt alle notwendigen Scores
+ * um zu entscheiden, ob es sich bei der Kontur um ein Kennzeichen handelt.
  */
 public class ContourElement {
 

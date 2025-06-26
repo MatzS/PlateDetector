@@ -8,7 +8,7 @@ import org.opencv.core.RotatedRect;
 import org.opencv.imgproc.Imgproc;
 
 /**
- * Für die BErechnung der Shape-Scores
+ * Für die Berechnung der Shape-Scores
  */
 public class ShapeScorer {
 
